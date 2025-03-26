@@ -1,5 +1,6 @@
 package com.demadev.controller;
 
+import com.demadev.exception.UserException;
 import com.demadev.model.User;
 import com.demadev.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class UserController {
         if(opt.isPresent()) {
             return ResponseEntity.ok(opt.get());
         }
-        throw new Exception("User not found");
+        throw new UserException("User not found with id " + id);
     }
 
     @PutMapping("/{userId}")
@@ -54,14 +55,14 @@ public class UserController {
             existingUser.setUpdatedAt(LocalDateTime.now());
             return new ResponseEntity<>(userRepository.save(existingUser), HttpStatus.OK);
         }
-        throw new Exception("User not found with id" + id);
+        throw new UserException("User not found with id " + id);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUserById(@PathVariable("userId") Long id) throws Exception {
         Optional<User> opt = userRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new Exception("User not found with id" + id);
+            throw new UserException("User not found with id " + id);
         }
         userRepository.delete(opt.get());
         return ResponseEntity.noContent().build();
