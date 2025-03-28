@@ -83,6 +83,6 @@ public class SalonServiceImpl implements SalonService {
 
     @Override
     public List<Salon> getSalonsByCity(String city) {
-        return salonRepository.findAllByCity(city);
+        return salonRepository.searchSalon(city);
     }
 }

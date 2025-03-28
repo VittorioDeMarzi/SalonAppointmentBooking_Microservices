@@ -14,6 +14,7 @@ public class SalonMapper {
         salonDto.setPhoneNumber(salon.getPhoneNumber());
         salonDto.setCity(salon.getCity());
         salonDto.setImages(salon.getImages());
+        salonDto.setOwnerId(salon.getOwnerId());
         salonDto.setOpenTime(salon.getOpenTime());
         salonDto.setCloseTime(salon.getCloseTime());
         return salonDto;

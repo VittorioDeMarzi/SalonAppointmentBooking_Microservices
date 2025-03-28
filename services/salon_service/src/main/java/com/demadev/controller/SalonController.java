@@ -25,6 +25,7 @@ public class SalonController {
             @RequestBody SalonDto req) {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
+
         Salon salon = salonService.createSalon(req, userDto);
         SalonDto salonDto = SalonMapper.mapToDto(salon);
         return new ResponseEntity<>(salonDto, HttpStatus.CREATED);
@@ -37,6 +38,7 @@ public class SalonController {
             @PathVariable("salonId") Long salonId) {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
+
         Salon salon = salonService.updateSalon(req, userDto, salonId);
         SalonDto salonDto = SalonMapper.mapToDto(salon);
         return new ResponseEntity<>(salonDto, HttpStatus.OK);
@@ -45,15 +47,47 @@ public class SalonController {
     //    http://localhost:5002/api/v1/salons
     @GetMapping
     public ResponseEntity<List<SalonDto>> getSalons() {
-        UserDto userDto = new UserDto();
-        userDto.setId(1L);
+
         List<Salon> list = salonService.getAllSalons();
         List<SalonDto> listDto = list.stream().map(SalonMapper::mapToDto).toList();
         return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
 
+    //    http://localhost:5002/api/v1/salons/5
+    @GetMapping("/{salonId}")
+    public ResponseEntity<SalonDto> getSalonById(
+            @PathVariable Long salonId) {
 
+        Salon salon = salonService.getSalonById(salonId);
+        SalonDto salonDto = SalonMapper.mapToDto(salon);
+        return new ResponseEntity<>(salonDto, HttpStatus.OK);
+    }
 
+    //    http://localhost:5002/api/v1/salons/search?city=Rome
+    @GetMapping("/search")
+    public ResponseEntity<List<SalonDto>> searchSalons(
+            @RequestParam("city") String city) {
 
+        List<Salon> list = salonService.getSalonsByCity(city);
+        List<SalonDto> listDto = list.stream().map(SalonMapper::mapToDto).toList();
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
+    }
 
+    @GetMapping("/owner")
+    public ResponseEntity<SalonDto> getSalonsByOwnerId(
+            @PathVariable Long salonId)  {
+        UserDto userDto = new UserDto();
+        userDto.setId(1L);
+        Salon salon = salonService.getSalonsByOwnerId(userDto.getId());
+        SalonDto salonDto = SalonMapper.mapToDto(salon);
+        return new ResponseEntity<>(salonDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{salonId}")
+    public ResponseEntity<Void> deleteSalon(
+            @PathVariable Long salonId) {
+
+        salonService.deleteSalonById(salonId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
