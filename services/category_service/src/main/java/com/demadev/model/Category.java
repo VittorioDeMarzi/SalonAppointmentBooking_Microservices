@@ -11,12 +11,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = false)
     private String name;
+
 
     private String image;
 
-    @Column(unique = true)
+    @Column(unique = false)
     private Long salonId;
 
 

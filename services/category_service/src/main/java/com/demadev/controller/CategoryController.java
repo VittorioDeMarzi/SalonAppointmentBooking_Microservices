@@ -15,14 +15,16 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/{salonId")
-    public ResponseEntity<Set<Category>> getCategoriesBySalon(@PathVariable Long salonId) throws Exception {
+    @GetMapping("/salon/{salonId}")
+    public ResponseEntity<Set<Category>> getCategoriesBySalon(
+            @PathVariable Long salonId) throws Exception {
         Set<Category> categories = categoryService.getAllCategoriesBySalonId(salonId);
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/{categoryId")
-    public ResponseEntity<Category> getCategoriesById(@PathVariable Long categoryId) throws Exception {
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<Category> getCategoriesById(
+            @PathVariable Long categoryId) throws Exception {
         Category category = categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(category);
     }
