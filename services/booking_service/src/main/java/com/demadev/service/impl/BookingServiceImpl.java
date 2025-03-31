@@ -12,6 +12,7 @@ import com.demadev.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,8 +39,9 @@ public class BookingServiceImpl implements BookingService {
 
         Boolean isSlotAvailable = isTimeSlotAvailable(salon, bookingEndTime, bookingEndTime);
 
-        int totalPrice = serviceDtoSet.stream()
-                .mapToInt(ServiceDto::getPrice).sum();
+        BigDecimal totalPrice = serviceDtoSet.stream()
+                .map(ServiceDto::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Set<Long> idList = serviceDtoSet.stream()
                 .map(ServiceDto::getId)
@@ -132,10 +134,7 @@ public class BookingServiceImpl implements BookingService {
     public SalonReport getSalonReportById(Long salonId) {
 
 //        List<Booking> bookings = getBookingsBySalon(salonId);
-//
-//        Double totalEarnings = bookings.stream()
-//                .mapToInt(Booking::getTotalPrice)
-//                .sum()
+
         return null;
     }
 }

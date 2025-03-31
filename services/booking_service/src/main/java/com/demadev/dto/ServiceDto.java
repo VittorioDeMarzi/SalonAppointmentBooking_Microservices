@@ -2,6 +2,8 @@ package com.demadev.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class ServiceDto {
     private Long id;
@@ -10,7 +12,7 @@ public class ServiceDto {
 
     private String description;
 
-    private int price;
+    private BigDecimal price;
 
     private int duration;
 

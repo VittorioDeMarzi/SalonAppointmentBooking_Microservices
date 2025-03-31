@@ -3,6 +3,8 @@ package com.demadev.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 public class ServiceOffering {
@@ -18,7 +20,7 @@ public class ServiceOffering {
     private String description;
 
     @Column(nullable = false)
-    private int price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private int duration;

@@ -4,6 +4,7 @@ import com.demadev.domain.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -33,5 +34,5 @@ public class Booking {
 
     private BookingStatus status = BookingStatus.PENDING;
 
-    private int totalPrice;
+    private BigDecimal totalPrice;
 }
