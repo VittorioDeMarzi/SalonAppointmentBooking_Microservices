@@ -12,6 +12,7 @@ import com.demadev.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -105,17 +106,36 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateBooking(Long bookingId, BookingStatus status) {
-        return null;
+    public Booking updateBooking(Long bookingId, BookingStatus status) throws Exception {
+        Booking booking = getBookingById(bookingId);
+        booking.setStatus(status);
+        return bookingRepository.save(booking);
     }
 
     @Override
-    public List<Booking> getBookingByDate(LocalDateTime date, Long salonId) {
-        return List.of();
+    public List<Booking> getBookingByDate(LocalDate date, Long salonId) {
+        List<Booking> bookingList = getBookingsBySalon(salonId);
+        if(date == null) return bookingList;
+
+        return bookingList.stream()
+                .filter(booking -> isSameDate(booking.getStartTime(), date))
+                .toList();
+    }
+
+    private boolean isSameDate(LocalDateTime startTime, LocalDate date) {
+        LocalDate bookingDate = startTime.toLocalDate();
+
+        return bookingDate.isEqual(date);
     }
 
     @Override
     public SalonReport getSalonReportById(Long salonId) {
+
+//        List<Booking> bookings = getBookingsBySalon(salonId);
+//
+//        Double totalEarnings = bookings.stream()
+//                .mapToInt(Booking::getTotalPrice)
+//                .sum()
         return null;
     }
 }

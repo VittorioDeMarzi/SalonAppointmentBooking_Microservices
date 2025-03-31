@@ -8,6 +8,7 @@ import com.demadev.dto.UserDto;
 import com.demadev.model.Booking;
 import com.demadev.model.SalonReport;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -19,8 +20,8 @@ public interface BookingService {
     List<Booking> getBookingsByCustomer(Long customerId);
     List<Booking> getBookingsBySalon(Long salonId);
     Booking getBookingById(Long bookingId) throws Exception;
-    Booking updateBooking(Long bookingId, BookingStatus status);
-    List<Booking> getBookingByDate(LocalDateTime date, Long salonId);
+    Booking updateBooking(Long bookingId, BookingStatus status) throws Exception;
+    List<Booking> getBookingByDate(LocalDate date, Long salonId);
     SalonReport getSalonReportById(Long salonId);
 
 }
