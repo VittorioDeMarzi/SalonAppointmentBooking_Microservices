@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime bookingStartTime = request.getStartTime();
         LocalDateTime bookingEndTime = bookingStartTime.plusMinutes(totalDuration);
 
-        Boolean isSlotAvailable = isTimeSlotAvailable(salon, bookingEndTime, bookingEndTime);
+        isTimeSlotAvailable(salon, bookingEndTime, bookingEndTime);
 
         BigDecimal totalPrice = serviceDtoSet.stream()
                 .map(ServiceDto::getPrice)
@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
                 booking.getEndTime().isEqual(existingBookingEndTime))
                 throw new Exception("Slot not available, choose a different time");
         }
-        return null;
+        return true;
     }
 
 
@@ -133,8 +133,29 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public SalonReport getSalonReportById(Long salonId) {
 
-//        List<Booking> bookings = getBookingsBySalon(salonId);
+        List<Booking> bookings = getBookingsBySalon(salonId);
+        BigDecimal totalEarnings = bookings.stream()
+                .map(Booking::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return null;
+        Integer totalBookings = bookings.size();
+
+        List<Booking> cancelledBookings = bookings.stream()
+                .filter(booking -> booking.getStatus().equals(BookingStatus.CANCELLED))
+                .toList();
+
+        BigDecimal totalRefund = cancelledBookings.stream()
+                .map(Booking::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        SalonReport report = new SalonReport();
+        report.setSalonId(salonId);
+//        report.setSalonName(??);
+        report.setCancelledBookings(cancelledBookings);
+        report.setTotalEarning(totalEarnings);
+        report.setTotalBookings(totalBookings);
+        report.setTotalRefund(totalRefund);
+
+        return report;
     }
 }
