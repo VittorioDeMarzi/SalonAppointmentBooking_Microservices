@@ -20,10 +20,10 @@ public class PaymentOrder {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private PaymentOrderStatus status = PaymentOrderStatus.PENDING;
+    private PaymentOrderStatus paymentStatus = PaymentOrderStatus.PENDING;
 
     @Column(nullable = false)
-    private PaymentMethod method;
+    private PaymentMethod paymentMethod;
 
     private String paymentLinkId;
 

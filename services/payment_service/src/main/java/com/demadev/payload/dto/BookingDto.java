@@ -1,6 +1,5 @@
 package com.demadev.payload.dto;
 
-import com.demadev.domain.BookingStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,8 +20,6 @@ public class BookingDto {
     private LocalDateTime endTime;
 
     private Set<Long> serviceIds;
-
-    private BookingStatus status;
 
     private BigDecimal totalPrice;
 }
