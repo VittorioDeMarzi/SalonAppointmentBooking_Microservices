@@ -4,13 +4,17 @@ import com.demadev.BookingMapper;
 import com.demadev.domain.BookingStatus;
 import com.demadev.dto.*;
 import com.demadev.model.Booking;
+import com.demadev.model.SalonReport;
 import com.demadev.service.BookingService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +37,8 @@ public class BookingController {
 
         SalonDto salon = new SalonDto();
         salon.setId(salonId);
+        salon.setOpenTime(LocalTime.of(9, 0, 0));
+        salon.setCloseTime(LocalTime.of(22, 0, 0));
 
         Set<ServiceDto> serviceDtos = new HashSet<>();
 
@@ -49,9 +55,8 @@ public class BookingController {
         return ResponseEntity.ok(newBooking);
     }
 
-    @GetMapping("/customer/{userId}")
-    public ResponseEntity<Set<BookingDto>> getBookingsByCustomer(
-            @PathVariable Long userId) {
+    @GetMapping("/customer")
+    public ResponseEntity<Set<BookingDto>> getBookingsByCustomer() {
 
         List<Booking> bookings = bookingService.getBookingsByCustomer(1L);
         return ResponseEntity.ok(getBookingDtos(bookings));
@@ -63,9 +68,8 @@ public class BookingController {
                .collect(Collectors.toSet());
     }
 
-    @GetMapping("/salon/{salonId}")
-    public ResponseEntity<Set<BookingDto>> getBookingsBySalon(
-            @PathVariable Long salonId) {
+    @GetMapping("/salon")
+    public ResponseEntity<Set<BookingDto>> getBookingsBySalon() {
 
         List<Booking> bookings = bookingService.getBookingsBySalon(1L);
         return ResponseEntity.ok(getBookingDtos(bookings));
@@ -79,7 +83,7 @@ public class BookingController {
         return ResponseEntity.ok(BookingMapper.mapToDto(booking));
     }
 
-    @GetMapping("/{bookingId}/status")
+    @PutMapping("/{bookingId}/status")
     public ResponseEntity<BookingDto> updateBookingsStatus(
             @PathVariable Long bookingId,
             @RequestParam BookingStatus status) throws Exception {
@@ -89,10 +93,10 @@ public class BookingController {
         return ResponseEntity.ok(BookingMapper.mapToDto(booking));
     }
 
-    @GetMapping("/slot/salon/{salonId}/date/{date}")
+    @GetMapping("/slot/salon/{salonId}")
     public ResponseEntity<List<BookingSlotDto>> getBookedSlot(
             @PathVariable Long salonId,
-            @PathVariable LocalDate date) {
+            @RequestParam(required = false) LocalDate date) {
         {
 
             List<Booking> bookings = bookingService.getBookingByDate(date, salonId);
@@ -106,6 +110,13 @@ public class BookingController {
                     .toList();
             return ResponseEntity.ok(slots);
         }
+    }
 
+    @GetMapping("/slot/salon/report")
+    public ResponseEntity<SalonReport> getSalonReport() {
+        {
+            SalonReport salonReport = bookingService.getSalonReportById(1L);
+            return ResponseEntity.ok(salonReport);
+        }
     }
 }

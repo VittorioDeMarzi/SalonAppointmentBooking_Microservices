@@ -67,21 +67,21 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime salonCloseTime = salonDto.getCloseTime().atDate(bookingStartTime.toLocalDate());
 
         // Check if the booking time is within the salon's operating hours)
-        if (bookingStartTime.isBefore(salonOpenTime) || bookingEndTime.isBefore(salonCloseTime))
+        if (bookingStartTime.isBefore(salonOpenTime) || bookingEndTime.isAfter(salonCloseTime))
             throw new Exception("Booking time must be within salon's working hours");
 
         // Check if there are any existing bookings within the booking time
-        List<Booking> existingBookings = bookingRepository.findBookingBxSalonId(salonDto.getId());
+        List<Booking> existingBookings = bookingRepository.findBookingBySalonId(salonDto.getId());
         for (Booking booking : existingBookings) {
             LocalDateTime existingBookingStartTime = booking.getStartTime();
             LocalDateTime existingBookingEndTime = booking.getEndTime();
 
-            if (booking.getStartTime().isBefore(bookingEndTime) &&
-                    booking.getEndTime().isAfter(bookingStartTime))
+            if (bookingEndTime.isAfter(existingBookingStartTime) &&
+                    bookingStartTime.isBefore(existingBookingEndTime))
                 throw new Exception("Slot not available, choose a different time");
 
-            if(booking.getStartTime().isEqual(existingBookingStartTime) ||
-                booking.getEndTime().isEqual(existingBookingEndTime))
+            if(bookingEndTime.isEqual(existingBookingStartTime) ||
+                bookingStartTime.isEqual(existingBookingEndTime))
                 throw new Exception("Slot not available, choose a different time");
         }
         return true;
@@ -90,12 +90,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getBookingsByCustomer(Long customerId) {
-        return bookingRepository.findBookingBxCustomerId(customerId);
+        return bookingRepository.findBookingByCustomerId(customerId);
     }
 
     @Override
     public List<Booking> getBookingsBySalon(Long salonId) {
-        return bookingRepository.findBookingBxSalonId(salonId);
+        return bookingRepository.findBookingBySalonId(salonId);
     }
 
     @Override
