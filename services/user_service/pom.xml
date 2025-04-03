@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.demadev</groupId>
-	<artifactId>user-service</artifactId>
+	<artifactId>user_service</artifactId> 
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user-service</name>
+	<name>user_service</name>
 	<description>user service for salon boking system</description>
 
 	<properties>
