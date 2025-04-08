@@ -33,7 +33,7 @@ public class GatewayRoutesConfig {
                         .uri("lb://SERVICE-OFFERING")
                 )
                 .route("user-service", r -> r
-                        .path("/api/v1/user**")
+                        .path( "/api/v1/user/**")
                         .uri("lb://USER-SERVICE")
                 )
                 .build();
