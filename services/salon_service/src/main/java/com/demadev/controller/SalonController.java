@@ -84,10 +84,10 @@ public class SalonController {
     }
 
     @DeleteMapping("/{salonId}")
-    public ResponseEntity<Void> deleteSalon(
+    public ResponseEntity<String> deleteSalon(
             @PathVariable Long salonId) {
 
         salonService.deleteSalonById(salonId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok("Salon deleted successfully");
     }
 }

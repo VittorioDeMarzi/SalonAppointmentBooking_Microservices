@@ -79,6 +79,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.5</version>
+				<configuration>
+					<to>
+						<image>docker.io/vittoriodemarzi/sbs-user:v1</image>
+						<auth>
+							<username>${env.DOCKER_HUB_USERNAME}</username>
+							<password>${env.DOCKER_HUB_PASSWORD}</password>
+						</auth>
+					</to>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
